@@ -18,3 +18,9 @@ Route::get('/mood/{mood}','websiteController@mood');
 Route::get('/lang/{lang}', 'websiteController@lang');
 
 
+Route::get('/get_start','websiteController@get_start');
+Route::post('/signup','websiteController@signup');
+
+Route::post('/login','websiteController@login');
+
+Route::get('logout','websiteController@logout');

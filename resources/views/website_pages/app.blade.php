@@ -12,13 +12,13 @@
         <title>Pro Traders</title>
         <link
              rel = "icon"
-            href ="{{ asset('images/forex-logo-white.jpg') }}"
+            href ="{{ asset('website_folder/imag/forex-logo-white.jpg') }}"
             type = "image/x-icon">
-        <link rel="shortcut icon" href="{{ asset('images/forex-logo-white.jpg') }}">
+        <link rel="shortcut icon" href="{{ asset('website_folder/imag/forex-logo-white.jpg') }}">
         <!--call bootstrap-->
-	    <link rel="stylesheet"href="{{ asset('css/bootstrap.css') }}"/>
+	    <link rel="stylesheet"href="{{ asset('website_folder/css/bootstrap.css') }}"/>
         <!--Page Style-->
-        <link rel="stylesheet"href="{{ asset('css/main.css') }}"/>
+        <link rel="stylesheet"href="{{ asset('website_folder/css/main.css') }}"/>
 
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
@@ -27,7 +27,7 @@
 
 
        <!--Animate.css-->
-       <link rel="stylesheet"href="{{ asset('css/animate.min.css') }}"/>
+       <link rel="stylesheet"href="{{ asset('website_folder/css/animate.min.css') }}"/>
        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
@@ -37,8 +37,8 @@
 
 
 	   <!--Internet Explorer-->
-	    <script src="{{ asset('js/html5shiv.min.js') }}"></script>
-        <script src="{{ asset('js/respond.min.js') }}"></script>
+	    <script src="{{ asset('website_folder/js/html5shiv.min.js') }}"></script>
+        <script src="{{ asset('website_folder/js/respond.min.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
         <script> window.default_locale_lang = "{{ config('app.locale') }}"; </script>
        <!---->
@@ -84,15 +84,15 @@
        </style>
     </head>
 	<body class="{{ session('mood')=='{dark}'?'dark-mood':'light-mood' }} change">
-        @if(Session('lang')=='ar')
+        {{--  @if(Session('lang')=='ar')
             {{ App::setLocale('ar') }}
-        @endif
+        @endif  --}}
         <!--- Header Section-->
         <div class="Nav wow fadeInUp">
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light-mood nav-scroll  fixed-top  py-4  mb-5 pl-5 pr-5">
                     <div class="container">
-                        <img src="images/final white-01.png" style=" width: 100px ; height: 80px;" >
+                        <img src="{{asset('website_folder/imag/finalwhite-01.png')}}" style=" width: 100px ; height: 80px;" >
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -104,12 +104,14 @@
                                     <!--- Nav Contact style in contact.scss --->
                                     <a class="nav-link nav-contact" href="/">Home</a>
                                 </li>
-                                <li class="nav-item pr-5">
-                                    <a class="nav-link nav-contact" href="#about">About Us</a>
-                                </li>
-                                <li class="nav-item pr-5">
-                                    <a class="nav-link nav-contact" href="#services">Services</a>
-                                </li>
+                                @if(Request::is('/'))
+                                    <li class="nav-item pr-5">
+                                        <a class="nav-link nav-contact" href="#about">About Us</a>
+                                    </li>
+                                    <li class="nav-item pr-5">
+                                        <a class="nav-link nav-contact" href="#services">Services</a>
+                                    </li>
+                                @endif
                                 <li class="nav-item pr-5">
                                     <a class="nav-link nav-contact" href="/contact">Contact</a>
                                 </li>
@@ -119,10 +121,11 @@
                                     </a>
                                     <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
                                     <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
-                                      <a class="dropdown-item nav-light light" href="/mood/{light}">Light</a>
-                                      <a class="dropdown-item nav-light dark" href="/mood/{dark}">Dark</a>
+                                      <a class="dropdown-item {{ @session('mood')=='{light}'? 'active':''}} nav-light light" href="/mood/{light}">Light</a>
+                                      <a class="dropdown-item {{ @session('mood')=='{dark}'? 'active':''}} nav-light dark" href="/mood/{dark}">Dark</a>
                                     </div>
                                 </li>
+                                {{--  language settings  --}}
                                 <li class="nav-item dropdown dropdown-move position-relative pr-5">
                                     <a class="nav-link" data-toggle="dropdown" href="#">
                                         <i  @if(config('app.locale', 'en')=='en') class="flag-icon flag-icon-us"  @else class="flag-icon flag-icon-sa" @endif ></i>
@@ -136,7 +139,8 @@
                                         </a>
                                     </div>
                                 </li>
-                                <li class="nav-item shadow-sm "><a class="nav-link nav-contact p-3" style="color: #FFF !important;" href="../form/index.html">Get Start</a></li>
+
+                                <li class="nav-item shadow-sm "><a class="nav-link nav-contact p-3" style="color: #FFF !important;" href="/get_start">Get Start</a></li>
                             </ul>
                         </div>
                     </div>
@@ -173,19 +177,19 @@
         <script src="http://4soft-eg.net/front/js/jquery.nicescroll.min.js"></script>
         <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
         <script src="http://4soft-eg.net/front/js/gmaps.js"></script>
-        <script src="{{ asset('js/particles.js') }}"></script>
+        <script src="{{ asset('website_folder/js/particles.js') }}"></script>
         <script src="js/app.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
         <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
-		<script src="{{ asset('js/wow.min.js') }}"></script>
+		<script src="{{ asset('website_folder/js/wow.min.js') }}"></script>
         <script>new WOW().init();</script>
-        <script src="{{ asset('js/jQuery3.3.1.min.js') }}"></script>
+        <script src="{{ asset('website_folder/js/jQuery3.3.1.min.js') }}"></script>
         <!---Slider Laibiray-->
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-        <script src="{{ asset('js/sliderComponents.js') }}"></script>
-        <script src="{{ asset('js/e.js') }}"></script>
+        <script src="{{ asset('website_folder/js/sliderComponents.js') }}"></script>
+        <script src="{{ asset('website_folder/js/e.js') }}"></script>
 	</body>
 
 

@@ -6,16 +6,16 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\MessageRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Message;
-use Illuminate\Http\Request;
+use App\User;
 
 class websiteController extends Controller
 {
     public function index(){
-        return view('index');
+        return view('website_pages.index');
     }
 
     public function contact(){
-        return view('contact');
+        return view('website_pages.contact');
     }
 
     public function send_message(MessageRequest $request){
@@ -41,45 +41,30 @@ class websiteController extends Controller
         return redirect($ref);
     }
 
+    public function get_start(){
+        return view('website_pages.get_started');
+    }
+
     public function signup(RegisterRequest $request){
-        if($request->regAs=="1")
-            $x=new Company;
-        else if($request->regAs=='2')
-            $x=new Provider;
-        $x->name=$request->name;
-        $x->email=$request->email;
-        $x->password=$request->password;
-        $x->phone=$request->phone;
-        $x->name=$request->name;
-        $x->save();
+        User::create([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'password'=>$request->password,
+            'phone'=>$request->phone,
+        ]);
         return redirect('/');
     }
 
     public function login(LoginRequest $request){
-
-        $email=$request->email;
-        $password=$request->password;
-
-        if($request->logAs=="1"){
-            $company=Company::where(['email'=>$email,'password'=>$password,'verified'=>1])->first();
-            if($company){
-                $request->session()->put('id', $company->id);
-                $request->session()->put('log', 'company');
-                $request->session()->put('name', $company->name);
-
-                return redirect('/company');
-            }
-        }else{
-            $service=Provider::where(['email'=>$email,'password'=>$password,'verified'=>1])->first();
-            if($service){
-                $request->session()->put('id', $service->id);
-                $request->session()->put('log', 'service');
-                $request->session()->put('name', $service->name);
-
-                return redirect('/service');
-            }
-        }
+        if(User::where(['email'=>$request->email,'password'=>$request->password])->count()>0)
+            return redirect('/dashboard');
         return redirect()->back();
+    }
+
+    public function logout(){
+        session()->forget('id');
+        session()->forget('log');
+        return redirect('/');
     }
 
 }
